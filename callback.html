@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Conexão com o TikTok - Clipper Foco Missão</title><style>body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;line-height:1.6;color:#1a1a1a}
+h1{font-size:1.6rem}nav a{margin-right:1rem}hr{margin:2rem 0}small{color:#555}
+button{font:inherit;padding:.5rem 1rem;cursor:pointer}.ok{color:#176b2c}.erro{color:#a11}</style></head><body>
+<nav><a href="index.html">Início / Home</a><a href="termos.html">Termos / Terms</a><a href="privacidade.html">Privacidade / Privacy</a></nav><hr>
+<h1>Conexão com o TikTok / TikTok connection</h1>
+<p id="msg">Verificando... / Checking...</p>
+<p id="acao" hidden>
+<button id="copiar" type="button">Copiar endereço / Copy address</button><br>
+<small>Cole o endereço copiado no Clipper Foco Missão para concluir a conexão. Nada é enviado a lugar nenhum a partir desta página.<br>
+Paste the copied address into Clipper Foco Missão to finish connecting. Nothing is sent anywhere from this page.</small>
+</p>
+<script>
+(function () {
+  var p = new URLSearchParams(location.search);
+  var msg = document.getElementById("msg");
+  var acao = document.getElementById("acao");
+  if (p.get("code")) {
+    msg.className = "ok";
+    msg.textContent = "Autorização recebida. / Authorization received.";
+    acao.hidden = false;
+    document.getElementById("copiar").addEventListener("click", function () {
+      var b = this;
+      navigator.clipboard.writeText(location.href).then(function () {
+        b.textContent = "Copiado! / Copied!";
+      }, function () {
+        window.prompt("Copie o endereço / Copy the address:", location.href);
+      });
+    });
+  } else if (p.get("error")) {
+    msg.className = "erro";
+    msg.textContent = "O TikTok não autorizou a conexão (" + p.get("error") + "). / TikTok did not authorize the connection.";
+  } else {
+    msg.textContent = "Esta página só é usada no retorno do login do TikTok. / This page is only used when returning from TikTok login.";
+  }
+})();
+</script>
+</body></html>
